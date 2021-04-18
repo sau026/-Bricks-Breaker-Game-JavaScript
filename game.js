@@ -4,6 +4,13 @@ import Ball from './ball.js';
 import Brick  from './brick.js';
 import { buildLevel, Level1 } from './level.js'
 
+const GAMESTATE = {
+    PAUSED: 0,
+    RUNNING: 1,
+    MENU: 2,
+    GAMEOVER: 3
+}
+
 export default class Game{
     constructor(gameWidth, gameHeight){
 
@@ -12,6 +19,7 @@ export default class Game{
     }
 
     start(){
+        this.gamestate = GAMESTATE.RUNNING;
         this.paddle = new Paddle(this);
         this.ball = new Ball(this);
 
@@ -24,10 +32,11 @@ export default class Game{
     
         this.gameObjects = [this.ball, this.paddle, ...bricks]
 
-        new InputHandler(this.paddle)
+        new InputHandler(this.paddle, this)
     }
 
     update(deltaTime){
+        if( this.gamestate == GAMESTATE.PAUSED) return;
         // this.paddle.update(deltaTime);
         // this.ball.update(deltaTime)
         this.gameObjects.forEach((object)=> object.update(deltaTime))
@@ -41,5 +50,16 @@ export default class Game{
         // this.brick.draw(ctx)
 
         this.gameObjects.forEach((object)=>object.draw(ctx))
+    }
+
+    togglePause(){
+        console.log('saurabh check gane stata:::', this.gamestate)
+        if(this.gamestate == GAMESTATE.RUNNING){
+            console.log('saurabh check gane stata::2222:', this.gamestate)
+            this.gamestate = GAMESTATE.PAUSED
+        } else{
+            console.log('saurabh check gane stata:::1111', this.gamestate)
+            this.gamestate = GAMESTATE.RUNNING
+        }
     }
 }
