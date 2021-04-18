@@ -15,7 +15,7 @@ ctx.clearRect(0,0,gameWidth,gameHeight);
 // ctx.fillRect(400 ,200, 50, 50)
 
 let game = new Game(gameWidth, gameHeight)
-game.start()
+// game.start()
 
 // paddle.draw(ctx)
 

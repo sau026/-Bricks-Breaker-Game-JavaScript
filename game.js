@@ -16,23 +16,18 @@ export default class Game{
 
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
+        this.paddle = new Paddle(this);
+        this.ball = new Ball(this);
+        new InputHandler(this.paddle, this)
+        this.gameObjects = [];
+        this.gamestate = GAMESTATE.PAUSED;
+        this.count = 0;
     }
 
     start(){
-        this.gamestate = GAMESTATE.RUNNING;
-        this.paddle = new Paddle(this);
-        this.ball = new Ball(this);
-
         let bricks = buildLevel(this, Level1)
-
-        // let bricks = [];
-        // for(let i=0; i<10; i++){
-        //     bricks.push(new Brick(this, {x:i*53, y:20}))
-        // }
-    
         this.gameObjects = [this.ball, this.paddle, ...bricks]
-
-        new InputHandler(this.paddle, this)
+        this.gamestate = GAMESTATE.RUNNING;
     }
 
     update(deltaTime){
@@ -49,17 +44,26 @@ export default class Game{
         // this.ball.draw(ctx )
         // this.brick.draw(ctx)
 
-        this.gameObjects.forEach((object)=>object.draw(ctx))
+        this.gameObjects.forEach((object)=>object.draw(ctx));
+
+        if(this.gamestate == GAMESTATE.PAUSED){
+
+            ctx.font = "30px New Roman"
+            ctx.fillStyle = "black"
+            ctx.textAlign = "center";
+            ctx.fillText("Paused!! Press Space to start", this.gameWidth / 2, this.gameHeight / 2)
+        }
     }
 
     togglePause(){
-        console.log('saurabh check gane stata:::', this.gamestate)
         if(this.gamestate == GAMESTATE.RUNNING){
-            console.log('saurabh check gane stata::2222:', this.gamestate)
             this.gamestate = GAMESTATE.PAUSED
         } else{
-            console.log('saurabh check gane stata:::1111', this.gamestate)
             this.gamestate = GAMESTATE.RUNNING
+            if(this.count == 0){
+                this.start();
+                this.count += 1;
+            }
         }
     }
 }

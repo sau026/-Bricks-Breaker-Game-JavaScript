@@ -51,6 +51,7 @@ export default class Ball{
         if(detectCollisionBottom(this, this.game.paddle)){
             // alert('Game over!! Please try again.')
             this.speed = {x:0, y:0}
+            alert('Game Over!!')
         }
     }
 }
